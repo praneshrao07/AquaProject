@@ -19,16 +19,21 @@ function GoogleIcon() {
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { signInWithGoogle, signInWithEmail } = useAuth();
+  const { signInWithGoogle, signInWithEmail, signInAsGuest } = useAuth();
 
   const handleGoogleSignIn = () => {
     signInWithGoogle();
-    router.replace('/(tabs)');
+    router.replace('/');
   };
 
   const handleEmailSignIn = () => {
     signInWithEmail();
-    router.replace('/(tabs)');
+    router.replace('/');
+  };
+
+  const handleGuestSignIn = () => {
+    signInAsGuest();
+    router.replace('/');
   };
 
   return (
@@ -71,6 +76,12 @@ export default function LoginScreen() {
             <Text style={[styles.signInButtonText, styles.emailButtonText]}>
               Continue with Email
             </Text>
+          </Pressable>
+
+          <Pressable
+            onPress={handleGuestSignIn}
+            style={({ pressed }) => [styles.guestLink, pressed && styles.buttonPressed]}>
+            <Text style={styles.guestLinkText}>Continue as Guest</Text>
           </Pressable>
         </GlassCard>
 
@@ -211,5 +222,17 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: Theme.textDim,
     paddingHorizontal: 16,
+  },
+  guestLink: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    marginTop: 4,
+  },
+  guestLinkText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: Theme.textMuted,
+    textDecorationLine: 'underline',
   },
 });

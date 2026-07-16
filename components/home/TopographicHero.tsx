@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Defs, Line, LinearGradient, Path, Stop } from 'react-native-svg';
+import { Sliders } from 'lucide-react-native';
 
 import Theme from '@/constants/Theme';
 import { getHealthLabel } from '@/data/mockAquariumData';
@@ -7,6 +8,7 @@ import type { Tank } from '@/types/aquarium';
 
 type TopographicHeroProps = {
   tank: Tank;
+  onEdit?: () => void;
 };
 
 function buildContourPaths(width: number, height: number): string[] {
@@ -61,9 +63,9 @@ function getHealthColor(status: Tank['healthStatus']): string {
   }
 }
 
-export default function TopographicHero({ tank }: TopographicHeroProps) {
+export default function TopographicHero({ tank, onEdit }: TopographicHeroProps) {
   const width = 400;
-  const height = 220;
+  const height = 250;
   const contours = buildContourPaths(width, height);
   const healthColor = getHealthColor(tank.healthStatus);
 
@@ -128,8 +130,19 @@ export default function TopographicHero({ tank }: TopographicHeroProps) {
       <View style={styles.vignette} />
 
       <View style={styles.content}>
-        <Text style={styles.eyebrow}>ACTIVE TANK</Text>
-        <Text style={styles.tankName}>{tank.name}</Text>
+        <View style={styles.headerRow}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.eyebrow}>ACTIVE TANK</Text>
+            <Text style={styles.tankName} numberOfLines={1}>{tank.name}</Text>
+          </View>
+          {onEdit && (
+            <Pressable
+              onPress={onEdit}
+              style={({ pressed }) => [styles.editButton, pressed && styles.editButtonPressed]}>
+              <Sliders color={Theme.accent} size={18} strokeWidth={2.5} />
+            </Pressable>
+          )}
+        </View>
 
         <View style={styles.healthRow}>
           <View style={[styles.healthDot, { backgroundColor: healthColor }]} />
@@ -156,7 +169,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Theme.tabBarBorder,
     overflow: 'hidden',
-    minHeight: 240,
   },
   gridWrap: {
     ...StyleSheet.absoluteFill,
@@ -184,29 +196,30 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'flex-end',
-    padding: 20,
-    paddingBottom: 24,
+    padding: 16,
+    paddingTop: 24,
+    paddingBottom: 16,
   },
   eyebrow: {
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 2,
     color: Theme.accent,
-    marginBottom: 6,
+    marginBottom: 4,
   },
   tankName: {
-    fontSize: 34,
+    fontSize: 32,
     fontWeight: '800',
     color: Theme.text,
     letterSpacing: 0.5,
     textShadowColor: Theme.accent,
     textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 12,
+    textShadowRadius: 10,
   },
   healthRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: 8,
     gap: 8,
   },
   healthDot: {
@@ -219,7 +232,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   healthStatus: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
   },
   scorePill: {
@@ -237,8 +250,29 @@ const styles = StyleSheet.create({
     color: Theme.accent,
   },
   meta: {
-    marginTop: 8,
+    marginTop: 6,
     fontSize: 12,
     color: Theme.textMuted,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  editButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: Theme.glass,
+    borderWidth: 1,
+    borderColor: Theme.glassBorder,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 4,
+  },
+  editButtonPressed: {
+    opacity: 0.7,
+    borderColor: Theme.accent,
   },
 });

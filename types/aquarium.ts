@@ -7,6 +7,7 @@ export type Tank = {
   healthScore: number;
   volumeLiters: number;
   lastChecked: string;
+  isPlanted?: boolean;
 };
 
 export type CountdownEvent = {
@@ -23,7 +24,7 @@ export type QuickAction = {
   icon: 'filter' | 'heater' | 'co2' | 'feeder';
 };
 
-export type ScheduleFrequency = 'daily' | 'weekly' | 'biweekly' | 'monthly';
+export type ScheduleFrequency = 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'custom-days' | 'interval';
 
 export type RoutineTask = {
   id: string;
@@ -33,6 +34,8 @@ export type RoutineTask = {
   frequency: ScheduleFrequency;
   time: string;
   dayOfWeek?: string;
+  intervalDays?: number;
+  customDays?: string[];
 };
 
 export type TankInhabitant = {

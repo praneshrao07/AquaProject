@@ -30,6 +30,7 @@ export const mockTank: Tank = {
   healthScore: 94,
   volumeLiters: 120,
   lastChecked: 'Today · 07:42 AM',
+  isPlanted: true,
 };
 
 export const mockCountdowns: CountdownEvent[] = [
@@ -185,6 +186,16 @@ export const mockPestReferences: PestReference[] = [
 ];
 
 export function formatSchedule(task: RoutineTask): string {
+  if (task.frequency === 'interval') {
+    return `Every ${task.intervalDays ?? 2} days · ${task.time}`;
+  }
+  if (task.frequency === 'custom-days') {
+    const daysStr = task.customDays && task.customDays.length > 0
+      ? task.customDays.join(', ')
+      : 'No days selected';
+    return `${daysStr} · ${task.time}`;
+  }
+
   const freqLabel =
     task.frequency === 'daily'
       ? 'Daily'

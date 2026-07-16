@@ -11,12 +11,12 @@ export default function useProtectedRoute() {
   useEffect(() => {
     if (isLoading) return;
 
-    const inAuthScreen = segments[0] === 'login';
+    const inAuthGroup = segments[0] === '(auth)';
 
-    if (!user && !inAuthScreen) {
+    if (!user && !inAuthGroup) {
       router.replace('/login');
-    } else if (user && inAuthScreen) {
-      router.replace('/(tabs)');
+    } else if (user && inAuthGroup) {
+      router.replace('/');
     }
   }, [user, isLoading, segments, router]);
 }

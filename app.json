@@ -18,7 +18,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.AquaProject"
+      "package": "com.anonymous.AquaProject",
+      "permissions": ["SCHEDULE_EXACT_ALARM", "USE_EXACT_ALARM"]
     },
     "web": {
       "bundler": "metro",
@@ -34,7 +35,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#0D0B14"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

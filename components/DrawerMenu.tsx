@@ -23,10 +23,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useDrawer } from '@/contexts/DrawerContext';
 
 const NAV_ITEMS = [
-  { label: 'Home', href: '/(tabs)', icon: Home },
-  { label: 'Reminders', href: '/(tabs)/reminders', icon: Bell },
-  { label: 'Info', href: '/(tabs)/info', icon: Info },
-  { label: 'Community', href: '/(tabs)/community', icon: Users },
+  { label: 'Home', href: '/', icon: Home },
+  { label: 'Reminders', href: '/reminders', icon: Bell },
+  { label: 'Info', href: '/info', icon: Info },
+  { label: 'Community', href: '/community', icon: Users },
 ] as const;
 
 export default function DrawerMenu() {
@@ -45,9 +45,9 @@ export default function DrawerMenu() {
     }).start();
   }, [isOpen, slideAnim]);
 
-  const handleNavigate = (href: string) => {
+  const handleNavigate = (href: (typeof NAV_ITEMS)[number]['href']) => {
     closeDrawer();
-    router.push(href as '/(tabs)' | '/(tabs)/reminders' | '/(tabs)/info' | '/(tabs)/community');
+    router.push(href);
   };
 
   const handleLogout = () => {
@@ -57,11 +57,7 @@ export default function DrawerMenu() {
   };
 
   const isActive = (href: string) => {
-    if (href === '/(tabs)') {
-      return pathname === '/' || pathname === '/(tabs)';
-    }
-    const segment = href.replace('/(tabs)/', '/');
-    return pathname === segment;
+    return pathname === href;
   };
 
   return (
